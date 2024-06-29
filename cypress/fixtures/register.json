@@ -1,0 +1,10 @@
+{
+    "valid_email":"test@1test.com",
+    "valid_password":"12345678901",
+    "valid_name":"test123",
+    "valid_confirmPassword":"12345678901",
+    "invalid_email":"testtest.com",
+    "invalid_password":"123",
+    "invalid_name":"te",
+    "invalid_confirmPassword":"123456789"
+}
