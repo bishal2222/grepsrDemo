@@ -1,0 +1,1152 @@
+{
+	"info": {
+		"_postman_id": "834dfee7-b8a2-441f-ba92-cb221e07291c",
+		"name": "Grepsr",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36012226"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"",
+									"postman.setEnvironmentVariable(\"user_id\",JSON.parse(responseBody).data.id)",
+									"",
+									"pm.test(\"status is 201\",()=>{",
+									"    pm.response.to.have.status(201)",
+									"})",
+									"",
+									"pm.test(\"message:User account created successfully\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"User account created successfully\")",
+									"})",
+									"",
+									"pm.test(\"checking email\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).data.email).to.eql(pm.variables.get('user_email'))",
+									"})",
+									"",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{user_name}}\",\n    \"email\":\"{{user_email}}\",\n    \"password\":\"{{user_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"postman.setEnvironmentVariable(\"user_token\",JSON.parse(responseBody).data.token)",
+									"",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(\"message:Login successful\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"Login successful\")",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{user_email}}\",\n    \"password\":\"{{user_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Profiles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(\"message:Profile successful\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"Profile successful\")",
+									"})",
+									"",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(\"message:Profile updated successful\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"Profile updated successful\")",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{update_user_name}}\",\n    \"phone\":\"{{update_user_phone}}\",\n    \"company\":\"{{update_user_company}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Password reset link successfully sent to ${pm.variables.get('user_email')} . Please verify by clicking on the given link`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Password reset link successfully sent to ${pm.variables.get('user_email')}. Please verify by clicking on the given link`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{user_email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/forgot-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Reset Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:The provided password reset token is valid`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`The provided password reset token is valid`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/verify-reset-password-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"verify-reset-password-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:The password has been successfully reset`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`The password has been successfully reset`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"token\":\"\",\n   \"newPassword\":\"{{user_new_reset_password}}\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:The password was successfully updated`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`The password was successfully updated`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\":\"{{user_password}}\",\n    \"newPassword\":\"{{user_new_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/change-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:User has been successfully logged out`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`User has been successfully logged out`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User Again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"postman.setEnvironmentVariable(\"user_token\",JSON.parse(responseBody).data.token)",
+									"",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(\"message:Login successful\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"Login successful\")",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{user_email}}\",\n    \"password\":\"{{user_new_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Account successfully deleted`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Account successfully deleted`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/delete-account",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"delete-account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Register User For Notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"",
+									"postman.setEnvironmentVariable(\"user_id\",JSON.parse(responseBody).data.id)",
+									"",
+									"pm.test(\"status is 201\",()=>{",
+									"    pm.response.to.have.status(201)",
+									"})",
+									"",
+									"pm.test(\"message:User account created successfully\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"User account created successfully\")",
+									"})",
+									"",
+									"pm.test(\"checking email\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).data.email).to.eql(pm.variables.get('user_email'))",
+									"})",
+									"",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"{{user_name}}\",\n    \"email\":\"{{user_email}}\",\n    \"password\":\"{{user_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login For Notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"postman.setEnvironmentVariable(\"user_token\",JSON.parse(responseBody).data.token)",
+									"",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(\"message:Login successful\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(\"Login successful\")",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{user_email}}\",\n    \"password\":\"{{user_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"postman.setEnvironmentVariable(\"note_id\",JSON.parse(responseBody).data.id)",
+									"",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Note successfully created`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Note successfully created`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"note from postman\",\n    \"description\":\"note description from postman\",\n    \"category\":\"Personal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Notes successfully retrieved`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Notes successfully retrieved`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  Note by note id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Note successfully retrieved`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Note successfully retrieved`)",
+									"})",
+									"",
+									"pm.test(\"note id match\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).data.id).to.eql(pm.variables.get('note_id'))",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notes/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{note_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Note successfully Updated`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Note successfully Updated`)",
+									"})",
+									"",
+									"pm.test(\"note id match\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).data.id).to.eql(pm.variables.get('note_id'))",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"{{note_id}}\",\n    \"title\":\"updated note title\",\n    \"description\":\"updated note desciption\",\n    \"completed\": false,\n    \"category\":\"Work\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notes/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{note_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Note successfully Updated`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Note successfully Updated`)",
+									"})",
+									"",
+									"pm.test(\"note id match\",()=>{",
+									"    pm.expect(JSON.parse(responseBody).data.id).to.eql(pm.variables.get('note_id'))",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"{{note_id}}\",\n    \"completed\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/notes/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{note_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try{",
+									"pm.test(\"status is 200\",()=>{",
+									"    pm.response.to.have.status(200)",
+									"})",
+									"",
+									"pm.test(`message:Note successfully deleted`,()=>{",
+									"    pm.expect(JSON.parse(responseBody).message).to.eql(`Note successfully deleted`)",
+									"})",
+									"",
+									"}catch(e){",
+									"pm.test(\"Test Failed: Need fixes \",()=>{",
+									"    throw new Error(e.message)",
+									"})",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notes/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{note_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "health check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try{",
+							"pm.test(\"status is 200\",()=>{",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(`message:Notes API is Running`,()=>{",
+							"    pm.expect(JSON.parse(responseBody).message).to.eql(`Notes API is Running`)",
+							"})",
+							"",
+							"}catch(e){",
+							"pm.test(\"Test Failed: Need fixes \",()=>{",
+							"    throw new Error(e.message)",
+							"})",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health-check",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health-check"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
