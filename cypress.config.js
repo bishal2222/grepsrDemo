@@ -8,7 +8,9 @@ module.exports = defineConfig({
     },
   },
   env:{
-    url: 'https://practice.expandtesting.com/notes/app/'
+    url: 'https://practice.expandtesting.com/notes/app/',
+    api: 'https://practice.expandtesting.com/notes/api'
   },
-  watchForFileChanges: false
+  watchForFileChanges: false,
+  failOnStatusCode: false
 });

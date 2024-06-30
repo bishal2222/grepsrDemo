@@ -1,5 +1,5 @@
-import Notes from "../support/notes"
-import {Login} from "../support/login"
+import Notes from "../../support/notes"
+import {Login} from "../../support/login"
  
 var note = new Notes()
 var login = new Login()

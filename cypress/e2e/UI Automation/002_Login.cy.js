@@ -1,4 +1,4 @@
-import {Login,invalidLogin} from "../support/login"
+import {Login,invalidLogin} from "../../support/login"
 
 var login = new Login()
 var invalid_login = new invalidLogin()

@@ -1,4 +1,4 @@
-import {Register,invalidRegister} from "../support/register"
+import {Register,invalidRegister} from "../../support/register"
 
 var register = new Register()
 var invalid_register = new invalidRegister()
