@@ -29,7 +29,7 @@ To run Automation in Postman
 
 + `cypress >> e2e >> API Automation`: This folder contains spec file for API automation
 + `cypress >> e2e >> UI AUtomation`: This folder contains spec file for UI automation
-+ `postman`: This folder contains json file of collection and environment variable and postman collection link
++ `postman`: This folder contains json file of collection and environment variable
 
 
 
